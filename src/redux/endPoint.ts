@@ -1,0 +1,1 @@
+export const userDataEndpoint = 'https://dummyjson.com/users/'

@@ -1,0 +1,43 @@
+.catHeaderWrapper{
+    width: 95%;
+    height: 25%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.catHeaderWrap{
+    width: 70%;
+    height: 70%;
+    border-radius: 16px;
+    border: 1px solid #E0E0E0;
+    padding-left: 15px;
+}
+
+.profileHeader{
+    height: 80%;
+    width: 30%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.catName{
+    margin-top: 20px;
+    font-family: "DM sans";
+    color: #024F87;
+    font-weight: 600;
+    font-size: 25px;
+    line-height: 32px;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.catDesc{
+    margin-top: 5px;
+    font-family: "DM sans";
+    color: #1A1A1A;
+    font-weight: 500;
+    font-size: 15px;
+    line-height: 16px;
+}

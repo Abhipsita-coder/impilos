@@ -1,0 +1,65 @@
+#leftNavHOC{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.leftNavWrapper{
+    width: 17%;
+    height: 100vh;
+    background-color: #172D4B;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-direction: column;
+    padding: 3% 0% 0% 5%
+}
+
+.leftNavWrapperShrinked{
+    width: 3%;
+    padding: 3% 2% 0% 2%;
+}
+
+.leftNavContent{
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin: 10px 10px 7px 15px;
+    height: 30px;
+    cursor: pointer;
+    padding-left: 10px;
+}
+
+#leftNavPageIcon{
+    height: 15px;
+    width: 15px;
+    margin: 0px 8px 0px 5px;
+}
+
+.leftNavPageTitle{
+    color: #f5f5f5;
+    font-weight: 300;
+    font-size: 16px;
+    line-height: 24px;
+    font-family: 'DM Sans';
+    padding-right: 10px;
+}
+
+.activeTab{
+    background-color: #0370BE;
+    border-radius: 10px;
+    max-width: 90%;
+}
+
+.activeTabShrinked{
+    width: 50%;
+}
+
+.leftNavSize{
+    margin: 80px 0px 0px 40%;
+    cursor: pointer;
+}
+
+.hide{
+    display: none;
+}

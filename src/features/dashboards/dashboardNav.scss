@@ -1,0 +1,76 @@
+.dashboardNavWrapper{
+    height: 100vh;
+    width: 15vw;
+    padding: 10px 10px;
+    background-color: #F8F8F8;
+    margin-right: 15px;
+}
+
+.dashboardNavIcon{
+    height: 22px;
+    width: 22px;
+    margin-right: 5px;
+}
+
+.dashboardHeader{
+    margin-left: 5px;
+    display: flex;
+    align-items: center;
+}
+
+.dashboardText{
+    font-family: "DM sans";
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 24px;
+}
+
+.addCategoryHeader{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-left: 5px;
+    height: 25px;
+    margin-bottom: 10px;
+}
+
+.categoryText{
+    font-family: "DM sans";
+    font-weight: 500;
+    font-size: 14px;
+    color: #424242;
+}
+
+.emptyCatWrapper{
+    width: 95px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    margin-top: 30px;
+    margin-left: 45px;
+}
+
+.noCat{
+    font-family: "DM sans";
+    font-weight: 500;
+    font-size: 14px;
+    color: #757575;
+}
+
+.catWrapper{
+    width: 99%;
+    height: 40px;
+    margin-left: -8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #024F87;
+    font-family: "DM sans";
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 20px;
+    padding: 0px 10px;
+    cursor: pointer;
+}

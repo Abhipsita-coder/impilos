@@ -1,0 +1,73 @@
+
+.welcomeText{
+    font-family: "DM sans";
+    color: #024F87;
+    font-weight: 500;
+    font-size: 25px;
+    line-height: 20px;
+    margin-bottom: 0px;
+}
+
+.notifWrapper{
+    display: flex;
+    font-family: "DM sans";
+    margin-top: 0px;
+    height: 10px;
+}
+.notif{
+    padding: 0px 4px;
+    color: #024F87;
+}
+
+.lastPage{
+    margin-top: 15px;
+}
+
+.profile{
+    height: 65%;
+    width: 23%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.profileWrapper{
+    height:100%;
+    width:80%;
+    display:flex;
+    align-items:center;
+    justify-content:space-around;
+    padding-left:15px
+}
+
+.profileTextWrapper{
+    height:32px;
+    width:32px;
+    border-radius:16px;
+    background-color:#0370BE;
+    text-wrap:wrap;
+    display:flex;
+    justify-content:center;
+    align-items:center
+}
+
+.shortName{
+    font-family:"DM sans";
+    font-size:12px;
+    color:#F5F5F5
+}
+
+.fullName{
+    font-family:"DM sans";
+    font-size:14px;
+    margin:0px;
+    padding:0px
+}
+
+.role{
+    padding:0px;
+    margin:0px;
+    font-family:"DM sans";
+    color:#757575
+}
+
