@@ -8,6 +8,7 @@ import addNotes from '../../assets/dashboard/AddNotes.svg';
 import addTask from '../../assets/dashboard/addTask.svg';
 import DashboardNavHOC from './DashboardNavHOC';
 const CatHeader = lazy(() => import('./CatHeader'));
+const SelectDashboard = lazy(() => import('./SelectDashboard'));
 
 const style = {
   width: 300,
@@ -25,6 +26,7 @@ const Dashboard = () => {
   const [model, setModel] = useState('category');
   const [subCatName, setSubCatName] = useState('');
   const [subCatDesc, setSubCatDesc] = useState('');
+  const [isCreateDashboard, setIsCreateDashboard] = useState(false);
 
   const handleClose = () => {
     // setActiveIndex(categories[categories.length-1])
@@ -272,12 +274,18 @@ const Dashboard = () => {
         bodyDesc={
           'Organize and view your dashboards effortlessly, and uncover valuable insights at a glance.'
         }
+        onClick={() => {
+          setIsCreateDashboard(true);
+        }}
         btntext={'Dashboard'}
       />
     );
   };
 
   const renderBody = () => {
+    if (isCreateDashboard) {
+      return <SelectDashboard />
+    }
     if (isParentExists) {
       return renderCreateDashboardBody();
     }

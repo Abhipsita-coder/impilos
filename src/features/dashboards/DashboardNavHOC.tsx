@@ -44,7 +44,6 @@ const DashboardNavHOC = (prop: object) => {
               onClick={() => {
                 setModel('category');
                 const updatedCats = deactivateItems(categories);
-
                 updatedCats[index] = {
                   ...category,
                   isActive: true,

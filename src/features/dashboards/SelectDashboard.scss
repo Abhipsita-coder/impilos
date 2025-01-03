@@ -1,0 +1,24 @@
+.selectDashbaordWrapper{
+    height: 100%;
+    width: 97%;
+}
+
+.headerWrapper{
+    height: 10%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-left: 20px;
+}
+
+.backNextBtnWrapper{
+    margin-right: 50px;
+}
+
+.createDBText{
+    color: #1A1A1A;
+    font-family: "DM sans";
+    font-weight: 500;
+    font-size: 18px;
+}
