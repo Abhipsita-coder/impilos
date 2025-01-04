@@ -1,24 +1,66 @@
-.selectDashbaordWrapper{
-    height: 100%;
-    width: 97%;
+.selectDashbaordWrapper {
+  height: 100%;
+  width: 97%;
 }
 
-.headerWrapper{
-    height: 10%;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding-left: 20px;
+.headerWrapper {
+  height: 10%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-left: 20px;
+  margin-bottom: 20px;
 }
 
-.backNextBtnWrapper{
-    margin-right: 50px;
+.backNextBtnWrapper {
+  margin-right: 50px;
 }
 
-.createDBText{
-    color: #1A1A1A;
-    font-family: "DM sans";
-    font-weight: 500;
-    font-size: 18px;
+.createDBText {
+  color: #1a1a1a;
+  font-family: 'DM sans';
+  font-weight: 500;
+  font-size: 18px;
+}
+
+.stepWrapper {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.dashBoardWrapper {
+  display: flex;
+}
+
+.dashboardTypeWrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #fff;
+  width: 19%;
+  height: 22px;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #e1e1e2;
+  margin-top: 20px;
+  margin-right: 15px;
+}
+
+.dashboardTypeText {
+  display: flex;
+  align-items: center;
+}
+
+.dashboardTypeText p {
+  font-family: 'DM sans';
+  margin-left: 5px;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.selectedDashboardTypeWrapper {
+  background-color: #e1e1e2;
 }
