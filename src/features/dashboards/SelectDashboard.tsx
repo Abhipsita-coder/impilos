@@ -23,7 +23,7 @@ const Header = () => {
   );
 };
 
-const StepperComponent = () => {
+const StepperComponent = (props) => {
   const steps = ['Dashboard selection', 'Dashboard details', 'Access permission'];
   return (
     <Stepper
@@ -47,8 +47,29 @@ const SelectDashboard = () => {
   const [selectionProperty, setSelectionProperty] = useState({});
 
   useEffect(() => {
-    console.log('selectionProperty', selectionProperty);
-  }, [selectionProperty]);
+    const myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+    myHeaders.append("Cookie", "fpc=Ag5esgBLcqJKqdfb6i5_-gaXbNfiAQAAAH86DN8OAAAA; stsservicecookie=estsfd; x-ms-gateway-slice=estsfd");
+    myHeaders.append("Accept", "*/*");
+
+    const urlencoded = new URLSearchParams();
+    urlencoded.append("client_id", "fccd352e-89dd-4097-aaf0-c2fd071f1afe");
+    urlencoded.append("client_secret", "zEn8Q~A71572UOAZfC6BDD4pFHZhNmFIw-B_5dtV");
+    urlencoded.append("scope", "https://analysis.windows.net/powerbi/api/.default");
+    urlencoded.append("grant_type", "client_credentials");
+
+    const requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: urlencoded,
+      redirect: "follow"
+    };
+
+    fetch("https://login.microsoftonline.com/c3c43524-7c76-4490-aac4-7a82fa8e6496/oauth2/v2.0/token", requestOptions)
+      .then((response) => response.text())
+      .then((result) => console.log(result))
+      .catch((error) => console.error(error));
+  }, []);
 
   // const SelectPowerBiProperty = () => {
   //   return (
