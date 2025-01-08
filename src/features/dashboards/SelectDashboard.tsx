@@ -3,8 +3,11 @@ import './SelectDashboard.scss';
 import { PrimaryBtn, SecondaryBtn } from '../../components/button';
 import { Stepper, Step, StepLabel, TextField, MenuItem, Select, Divider } from '@mui/material';
 import { Radio } from '@mui/joy';
+import { PowerBIEmbed } from 'powerbi-client-react';
+import { models } from 'powerbi-client'
 import PowerBiIcon from '../../assets/dashboard/powerBiIcon.svg';
 import TableauIcon from '../../assets/dashboard/tableauIcon.svg';
+
 
 const Header = () => {
   const BackNextBtn = () => {
@@ -44,14 +47,14 @@ const StepperComponent = (props) => {
 
 const SelectDashboard = () => {
   const [selectedDashboard, setSelectedDashboard] = useState('Power BI');
-  const [selectionProperty, setSelectionProperty] = useState({});
+  const [authToken, setAuthToken] = useState('');
+  const [workSpaceList, setWorkSpaceList] = useState();
+  const [dbList, setDbList] = useState();
+  const [selectedDashboardPreview, setSelectedDashboardPreview] = useState({});
+  const [workspaceID, setWorkspaceID] = useState();
+
 
   useEffect(() => {
-    const myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
-    myHeaders.append("Cookie", "fpc=Ag5esgBLcqJKqdfb6i5_-gaXbNfiAQAAAH86DN8OAAAA; stsservicecookie=estsfd; x-ms-gateway-slice=estsfd");
-    myHeaders.append("Accept", "*/*");
-
     const urlencoded = new URLSearchParams();
     urlencoded.append("client_id", "fccd352e-89dd-4097-aaf0-c2fd071f1afe");
     urlencoded.append("client_secret", "zEn8Q~A71572UOAZfC6BDD4pFHZhNmFIw-B_5dtV");
@@ -60,47 +63,89 @@ const SelectDashboard = () => {
 
     const requestOptions = {
       method: "POST",
-      headers: myHeaders,
       body: urlencoded,
       redirect: "follow"
     };
 
     fetch("https://login.microsoftonline.com/c3c43524-7c76-4490-aac4-7a82fa8e6496/oauth2/v2.0/token", requestOptions)
-      .then((response) => response.text())
-      .then((result) => console.log(result))
+      .then((response) => response.json())
+      .then((result) => setAuthToken(result.access_token))
       .catch((error) => console.error(error));
   }, []);
 
-  // const SelectPowerBiProperty = () => {
-  //   return (
-  //     <div className='selectPowerBiPropertyWrapper'>
-  //       <div>
-  //         <p>Workspace ID</p>
-  //         <TextField onChange={({ target: { value } }) => {
-  //           setSelectionProperty({ ...selectionProperty, workspaceId: value })
-  //         }}
-  //           size='small'
-  //         />
-  //       </div>
-  //       <div>
-  //         <p>Select Dashboard</p>
-  //         <Select onChange={({ target: { value } }) => {
-  //           setSelectionProperty({ ...selectionProperty, dashboard: value })
-  //         }} size='small' >
-  //           <MenuItem value={10}>Ten</MenuItem>
-  //           <MenuItem value={20}>Twenty</MenuItem>
-  //           <MenuItem value={30}>Thirty</MenuItem>
-  //         </Select>
-  //       </div>
-  //     </div>
-  //   )
-  // }
+  useEffect(() => {
+    if (authToken) {
+      const myHeaders = new Headers();
+      myHeaders.append("Authorization", "Bearer " + authToken);
 
-  // const SelectTableauProperty = () => {
-  //   return (
+      const requestOptions = {
+        method: "GET",
+        headers: myHeaders,
+        redirect: "follow"
+      };
 
-  //   )
-  // }
+      fetch("https://api.powerbi.com/v1.0/myorg/groups", requestOptions)
+        .then((response) => response.json())
+        .then((result) => setWorkSpaceList(result.value))
+        .catch((error) => console.error(error));
+    }
+  }, [authToken])
+
+  const getDashboards = (id) => {
+    const myHeaders = new Headers();
+    myHeaders.append("Authorization", "Bearer " + authToken);
+
+    const requestOptions = {
+      method: "GET",
+      headers: myHeaders,
+      redirect: "follow"
+    };
+    fetch(`https://api.powerbi.com/v1.0/myorg/groups/${id}/reports`, requestOptions)
+      .then((response) => response.json())
+      .then((result) => setDbList(result.value))
+      .catch((error) => console.error(error));
+  }
+
+  const PowerBiPreview = () => {
+    console.log('selectedDashboardPreview', selectedDashboardPreview);
+
+    return (
+      <PowerBIEmbed
+        embedConfig={{
+          type: 'report',   // Supported types: report, dashboard, tile, visual, qna, paginated report and create
+          id: selectedDashboardPreview.id,
+          embedUrl: selectedDashboardPreview.embedUrl,
+          accessToken: authToken,
+          tokenType: models.TokenType.Embed, // Use models.TokenType.Aad for SaaS embed
+          settings: {
+            panes: {
+              filters: {
+                expanded: false,
+                visible: false
+              }
+            },
+            background: models.BackgroundType.Transparent,
+          }
+        }}
+
+        eventHandlers={
+          new Map([
+            ['loaded', function () { console.log('Report loaded'); }],
+            ['rendered', function () { console.log('Report rendered'); }],
+            ['error', function (event) { console.log(event.detail); }],
+            ['visualClicked', () => console.log('visual clicked')],
+            ['pageChanged', (event) => console.log(event)],
+          ])
+        }
+
+        cssClassName={"reportClass"}
+
+        getEmbeddedComponent={(embeddedReport) => {
+          window.report = embeddedReport as Report;
+        }}
+      />
+    )
+  }
 
   const DashboardType = () => {
     const Dashboard = (props) => {
@@ -142,24 +187,37 @@ const SelectDashboard = () => {
         <div className='selectPowerBiPropertyWrapper'>
           <div>
             <p>Workspace ID</p>
-            <TextField
+            <Select
               onChange={({ target: { value } }) => {
-                setSelectionProperty({ ...selectionProperty, workspaceId: value });
+                getDashboards(value);
+                setWorkspaceID(value)
               }}
               size='small'
-            />
+            >
+              {
+                workSpaceList && workSpaceList.map((item) => {
+                  return (
+                    <MenuItem value={item.id}>{item.name}</MenuItem>
+                  )
+                })
+              }
+            </Select>
           </div>
           <div>
             <p>Select Dashboard</p>
             <Select
               onChange={({ target: { value } }) => {
-                setSelectionProperty({ ...selectionProperty, dashboard: value });
+                setSelectedDashboardPreview(value);
               }}
               size='small'
             >
-              <MenuItem value={10}>Ten</MenuItem>
-              <MenuItem value={20}>Twenty</MenuItem>
-              <MenuItem value={30}>Thirty</MenuItem>
+              {
+                dbList && dbList.map((item) => {
+                  return (
+                    <MenuItem value={item}>{item.name}</MenuItem>
+                  )
+                })
+              }
             </Select>
           </div>
         </div>
@@ -171,15 +229,12 @@ const SelectDashboard = () => {
               key='random1'
               fullWidth
               size='small'
-              onChange={({ target: { value } }) => {
-                setSelectionProperty({ tableauEmbeddingCode: value });
-              }}
-              value={selectionProperty.tableauEmbeddingCode}
             />
           </div>
         </div>
       )}
       <Divider />
+      {selectedDashboardPreview?.id ? <PowerBiPreview /> : ''}
     </div>
   );
 };
