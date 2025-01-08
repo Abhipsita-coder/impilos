@@ -75,6 +75,7 @@ const Header: FC<HeaderProps> = (prop) => {
       <div>
         <p className='welcomeText' >{`Welcome to Impilos${firstName ? `, ${firstName}` : ''}!`}</p>
         <div className='notifWrapper'>
+          
           <p>You got</p>
           <p className='notif'>2 new</p>
           <p>notifications</p>
