@@ -189,11 +189,10 @@ const Dashboard = () => {
           value={subCatDesc}
         />
         <div className='catBtnWrapper'>
-          <Button variant='outlined' className='btn' onClick={handleClose}>
+          <Button className='btn' variant='outlined' onClick={handleClose}>
             Cancel
           </Button>
           <Button
-            className='btn'
             onClick={() => {
               if (subCatName || subCatDesc) {
                 if (editIndex > -1) {
@@ -249,7 +248,7 @@ const Dashboard = () => {
           value={desc}
         />
         <div className='catBtnWrapper'>
-          <Button variant='outlined' className='btn' onClick={handleClose}>
+          <Button className='btn' variant='outlined' onClick={handleClose}>
             Cancel
           </Button>
           <Button
@@ -284,7 +283,7 @@ const Dashboard = () => {
 
   const renderBody = () => {
     if (isCreateDashboard) {
-      return <SelectDashboard />
+      return <SelectDashboard />;
     }
     if (isParentExists) {
       return renderCreateDashboardBody();
@@ -313,7 +312,7 @@ const Dashboard = () => {
         />
 
         <div className='dashboardBody'>
-          {activeTab?.name ? <CatHeader activeCat={activeTab} /> : <Header width={'88%'} />}
+          {activeTab?.name ? <CatHeader activeCat={activeTab} /> : <Header width={'90'} />}
           {renderBody()}
         </div>
         <Modal open={open} onClose={handleClose}>
