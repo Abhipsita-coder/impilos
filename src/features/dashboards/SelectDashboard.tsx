@@ -10,10 +10,10 @@ import { PrimaryBtn, SecondaryBtn } from '../../components/button';
 import { Stepper, Step, StepLabel, TextField, MenuItem, Select, Divider } from '@mui/material';
 import { Radio } from '@mui/joy';
 import { PowerBIEmbed } from 'powerbi-client-react';
-import { models } from 'powerbi-client'
+import { models } from 'powerbi-client';
+import { useDispatch, useSelector } from 'react-redux';
 import PowerBiIcon from '../../assets/dashboard/powerBiIcon.svg';
 import TableauIcon from '../../assets/dashboard/tableauIcon.svg';
-
 
 const Header = () => {
   const BackNextBtn = () => {
@@ -53,77 +53,82 @@ const StepperComponent = () => {
 
 const SelectDashboard = () => {
   const [selectedDashboard, setSelectedDashboard] = useState('Power BI');
-  const [workSpaceList, setWorkSpaceList] = useState();
-  const [dbList, setDbList] = useState();
   const [workspaceID, setWorkspaceID] = useState<string | undefined>('');
-  const [powerBiCredentials, setPowerBiCredentials] = useState<{ embedToken: string, embedUrl: string, reportId: string }>({
-    embedToken: '',
-    embedUrl: '',
-    reportId: ''
-  })
-  function resizeIFrameToFitContent(iFrame:HTMLIFrameElement) {
+
+  const dispatch = useDispatch();
+  const workSpaceList = useSelector((state: { previewData: { workSpaceList } }) => {
+    return state?.previewData?.workSpaceList || [];
+  });
+
+  const dbList = useSelector((state: { previewData: { dashboardList } }) => {
+    return state?.previewData?.dashboardList || [];
+  });
+
+  const powerBiCredentials = useSelector((state: { previewData: { powerBiCredentials } }) => {
+    return state?.previewData?.powerBiCredentials || {};
+  });
+
+  function resizeIFrameToFitContent(iFrame: HTMLIFrameElement) {
     iFrame.width = '100%';
     iFrame.height = '700px';
   }
 
-
   useEffect(() => {
-    fetch("http://localhost:8000/api/workspaces")
-      .then((response) => response.json())
-      .then((result) => {
-        setWorkSpaceList(result)
-      })
-      .catch((error) => console.error(error));
+    dispatch({
+      type: 'GET_WORKSPACE_IDS',
+    });
   }, []);
 
-  const getDashboards = (id:string) => {
-    fetch(`http://localhost:8000/api/reports/${id}`)
-      .then((response) => response.json())
-      .then((result) => setDbList(result))
-      .catch((error) => console.error(error));
-  }
+  const getDashboards = (id: string) => {
+    dispatch({
+      type: 'GET_DASHBOARD_LIST',
+      ID: id,
+    });
+  };
 
   const PowerBiPreview = () => {
     return (
       <PowerBIEmbed
         cssClassName='powerBiPreview'
         embedConfig={{
-          type: 'report',   // Supported types: report, dashboard, tile, visual, qna, paginated report and create
+          type: 'report', // Supported types: report, dashboard, tile, visual, qna, paginated report and create
           accessToken: powerBiCredentials.embedToken,
           embedUrl: powerBiCredentials.embedUrl,
           id: powerBiCredentials.reportId,
           tokenType: models.TokenType.Embed, // Use models.TokenType.Aad for SaaS embed
         }}
-
         eventHandlers={
           new Map([
-            ['loaded', function () {
-              const iframes = document.querySelectorAll("iframe");
+            [
+              'loaded',
+              function () {
+                const iframes = document.querySelectorAll('iframe');
                 for (let i = 0; i < iframes.length; i++) {
                   resizeIFrameToFitContent(iframes[i]);
-                  iframes[i].attributes.removeNamedItem("style");
+                  iframes[i].attributes.removeNamedItem('style');
                 }
-            }],
+              },
+            ],
             // ['rendered', function () { console.log('Report rendered'); }],
             // ['error', function (event) { console.log(event.detail); }],
             // ['visualClicked', () => console.log('visual clicked')],
             // ['pageChanged', (event) => console.log(event)],
           ])
         }
-
         getEmbeddedComponent={(embeddedReport) => {
           window.report = embeddedReport as unknown as Report;
         }}
       />
-    )
-  }
+    );
+  };
 
   const getPowerBiCredentials = (dashboardID: string) => {
-    fetch(`http://localhost:8000/api/get-embed-config/${workspaceID}/${dashboardID}`)
-      .then((response) => response.json())
-      .then((result) => setPowerBiCredentials(result))
-      .catch((error) => console.error(error));
-  }
+    dispatch({
+      type: 'GET_POWER_BI_CREDENTIALS',
+      dashboardID,
+      workspaceID,
+    });
+  };
 
   const DashboardType = () => {
     interface DashboardProps {
@@ -173,34 +178,28 @@ const SelectDashboard = () => {
             <Select
               onChange={({ target: { value } }) => {
                 getDashboards(value as string);
-                setWorkspaceID(value as string)
+                setWorkspaceID(value as string);
               }}
               size='small'
             >
-              {
-                workSpaceList && workSpaceList.map((item) => {
-                  return (
-                    <MenuItem value={item.id}>{item.name}</MenuItem>
-                  )
-                })
-              }
+              {workSpaceList &&
+                workSpaceList.map((item) => {
+                  return <MenuItem value={item.id}>{item.name}</MenuItem>;
+                })}
             </Select>
           </div>
           <div>
             <p>Select Dashboard</p>
             <Select
               onChange={({ target: { value } }) => {
-                getPowerBiCredentials(value.id)
+                getPowerBiCredentials(value.id);
               }}
               size='small'
             >
-              {
-                dbList && dbList.map((item) => {
-                  return (
-                    <MenuItem value={item}>{item.name}</MenuItem>
-                  )
-                })
-              }
+              {dbList &&
+                dbList.map((item) => {
+                  return <MenuItem value={item}>{item.name}</MenuItem>;
+                })}
             </Select>
           </div>
         </div>
@@ -208,17 +207,13 @@ const SelectDashboard = () => {
         <div className='selectPowerBiPropertyWrapper'>
           <div>
             <p>Tableau embedding code</p>
-            <TextField
-              key='random1'
-              fullWidth
-              size='small'
-            />
+            <TextField key='random1' fullWidth size='small' />
           </div>
         </div>
       )}
       <Divider />
-      
-        {powerBiCredentials?.embedToken ? <PowerBiPreview /> : ''}
+
+      {powerBiCredentials?.embedToken ? <PowerBiPreview /> : ''}
     </div>
   );
 };
