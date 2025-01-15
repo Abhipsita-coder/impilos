@@ -17,8 +17,9 @@
   margin-top: 40px;
   flex-direction: column;
   align-items: center;
-  width: 330px;
+  width: 400px;
   align-self: center;
+  font-family: "DM sans";
 }
 
 .addNotesLogo {
@@ -41,14 +42,9 @@
   text-align: center;
   color: #1a1a1a;
 }
-
 .addCatBtn {
-  color: #fff;
-  background-color: #0370be;
-  border: 1px solid #0370be;
-  border-radius: 5px;
-  padding: 7px 13px;
-  margin-top: 20px;
+  font-weight: 5;
+  margin-top: 15px;
 }
 
 .addCatModel {

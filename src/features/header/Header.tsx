@@ -23,7 +23,7 @@ export const HeaderImg = styled.div<{ width: string }>`
 const getName = (firstName: string, surnameFirstChar: string, shortenName: boolean): string => {
   const name = shortenName ? firstName.split('')[0] : firstName;
   if (firstName && surnameFirstChar) {
-    return name + surnameFirstChar;
+    return name +' '+ surnameFirstChar;
   } else if (firstName) {
     return name;
   } else {

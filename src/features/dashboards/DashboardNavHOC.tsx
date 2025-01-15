@@ -2,6 +2,7 @@ import './dashboardNav.scss';
 import dashboardNav from '../../assets/dashboard/dashboardNav.svg';
 import addCategoryBtn from '../../assets/dashboard/addCat.svg';
 import DotMenu from './DotMenu';
+import { NO_CATEGORY_TEXT } from './dashboardConstants';
 
 const DashboardNavHOC = (prop: object) => {
   const {
@@ -98,8 +99,7 @@ const DashboardNavHOC = (prop: object) => {
       })
     ) : (
       <div className='emptyCatWrapper'>
-        {' '}
-        <p className='noCat'>No Categories added yet</p>
+          <p className='noCat'>{ NO_CATEGORY_TEXT}</p>
       </div>
     );
   };
