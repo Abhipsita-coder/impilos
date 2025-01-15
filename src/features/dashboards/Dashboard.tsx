@@ -1,4 +1,4 @@
-import { lazy, Suspense, useState, useEffect } from 'react';
+import { lazy, Suspense, useState } from 'react';
 import { Modal, Box, TextField } from '@mui/material';
 import { Input, Button } from '@mui/joy';
 import RenderLeftNav from '../leftNav/RenderLeftNav';
@@ -7,6 +7,8 @@ import './dashboard.scss';
 import addNotes from '../../assets/dashboard/AddNotes.svg';
 import addTask from '../../assets/dashboard/addTask.svg';
 import DashboardNavHOC from './DashboardNavHOC';
+import { CREATE_CATEGORY_HEADER, CREATE_CATEGORY_BODY, CREATE_SUB_CATEGORY_HEADER, CREATE_SUB_CATEGORY_BODY, CREATE_DASHBOARD_HEADER, CREATE_DASHBOARD_BODY } from './dashboardConstants'
+
 const CatHeader = lazy(() => import('./CatHeader'));
 const SelectDashboard = lazy(() => import('./SelectDashboard'));
 
@@ -53,9 +55,12 @@ const Dashboard = () => {
         <img src={imgSrc} alt={altText} className='addNotesLogo' />
         <p className='createCategoryNotes'>{bodyHeader}</p>
         <p className='createCategoryNotesDesc'>{bodyDesc}</p>
-        <button className='addCatBtn' onClick={onClick}>
-          + {btntext}{' '}
-        </button>
+        <Button onClick={onClick} style={{
+          fontWeight: 5,
+          marginTop:'15px'
+        }} >
+          + {btntext}
+        </Button>
       </div>
     );
   };
@@ -88,10 +93,8 @@ const Dashboard = () => {
       <CatBody
         imgSrc={addNotes}
         altText={'add notes logo'}
-        bodyHeader={'Get Started by Creating a Category!'}
-        bodyDesc={
-          'Organize and view your dashboards effortlessly, and uncover valuable insights at a glance.'
-        }
+        bodyHeader={CREATE_CATEGORY_HEADER}
+        bodyDesc={CREATE_CATEGORY_BODY}
         onClick={() => {
           setModel('category');
           setName('');
@@ -109,28 +112,21 @@ const Dashboard = () => {
         <CatBody
           imgSrc={addTask}
           altText={'add notes logo'}
-          bodyHeader={'Create a Sub-Category or Dashboard!'}
-          bodyDesc={
-            'Organize your dashboardby creating a sub-category or directly adding a dasshboards. Start building clear path to insights.'
-          }
+          bodyHeader={CREATE_SUB_CATEGORY_HEADER}
+          bodyDesc={CREATE_SUB_CATEGORY_BODY}
           onClick={() => {
             setModel('subCategory');
             handleOpen();
           }}
           btntext={'Sub-Category'}
         />
-        <button
-          className='addCatBtn'
-          style={{
-            backgroundColor: '#fff',
-            color: '#1A1A1A',
-            width: '130px',
-            alignSelf: 'center',
-            border: '1px solid #1A1A1A',
-          }}
-        >
-          + Dashboard{' '}
-        </button>
+        <Button variant="outlined" style={{
+          width: '140px',
+          alignSelf: 'center',
+          marginTop: '10px',
+        }}>
+          + Dashboard
+        </Button>
       </>
     );
   };
@@ -189,11 +185,10 @@ const Dashboard = () => {
           value={subCatDesc}
         />
         <div className='catBtnWrapper'>
-          <Button variant='outlined' className='btn' onClick={handleClose}>
+          <Button className='btn' variant='outlined' onClick={handleClose}>
             Cancel
           </Button>
           <Button
-            className='btn'
             onClick={() => {
               if (subCatName || subCatDesc) {
                 if (editIndex > -1) {
@@ -249,7 +244,7 @@ const Dashboard = () => {
           value={desc}
         />
         <div className='catBtnWrapper'>
-          <Button variant='outlined' className='btn' onClick={handleClose}>
+          <Button className='btn' variant='outlined' onClick={handleClose}>
             Cancel
           </Button>
           <Button
@@ -270,10 +265,8 @@ const Dashboard = () => {
       <CatBody
         imgSrc={addNotes}
         altText={'add notes logo'}
-        bodyHeader={'Get Started by Creating a Dashboard!'}
-        bodyDesc={
-          'Organize and view your dashboards effortlessly, and uncover valuable insights at a glance.'
-        }
+        bodyHeader={CREATE_DASHBOARD_HEADER}
+        bodyDesc={CREATE_DASHBOARD_BODY}
         onClick={() => {
           setIsCreateDashboard(true);
         }}
@@ -284,7 +277,7 @@ const Dashboard = () => {
 
   const renderBody = () => {
     if (isCreateDashboard) {
-      return <SelectDashboard />
+      return <SelectDashboard />;
     }
     if (isParentExists) {
       return renderCreateDashboardBody();
@@ -313,7 +306,7 @@ const Dashboard = () => {
         />
 
         <div className='dashboardBody'>
-          {activeTab?.name ? <CatHeader activeCat={activeTab} /> : <Header width={'88%'} />}
+          {activeTab?.name ? <CatHeader activeCat={activeTab} /> : <Header width={'90'} />}
           {renderBody()}
         </div>
         <Modal open={open} onClose={handleClose}>
